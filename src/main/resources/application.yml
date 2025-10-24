@@ -1,0 +1,55 @@
+# 队列路由测试项目配置
+spring:
+  application:
+    name: queue-router-test
+  
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+  
+  # RabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    connection-timeout: 15000
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+      receive-timeout: 1000
+      reply-timeout: 1000
+
+# 日志配置
+logging:
+  level:
+    com.example.queue: DEBUG
+    org.springframework.amqp: INFO
+    org.springframework.data.redis: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# 队列配置
+queue:
+  # 默认队列类型
+  default-type: java
+  # 默认队列名称
+  default-name: default-queue
+  # 队列路由配置
+  router:
+    # 是否启用队列路由
+    enabled: true
+    # 最大队列服务数量
+    max-queue-services: 10

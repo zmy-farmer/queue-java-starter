@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Redis服务
+  redis:
+    image: redis:7-alpine
+    container_name: queue-test-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - queue-network
+
+  # RabbitMQ服务
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: queue-test-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - queue-network
+
+  # 应用服务
+  app:
+    build: .
+    container_name: queue-test-app
+    ports:
+      - "38080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_REDIS_HOST: redis
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - queue-network
+
+volumes:
+  redis_data:
+  rabbitmq_data:
+
+networks:
+  queue-network:
+    driver: bridge
