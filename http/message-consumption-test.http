@@ -1,0 +1,47 @@
+### 验证消息消费状态
+
+# 1. 先查看队列状态（发送消息前）
+GET http://localhost:8080/api/queue/info
+
+###
+
+# 2. 发送一条消息
+POST http://localhost:8080/api/queue/send
+Content-Type: application/json
+
+{
+  "content": "测试消息消费状态",
+  "messageType": "TEST"
+}
+
+###
+
+# 3. 查看队列状态（发送消息后）
+GET http://localhost:8080/api/queue/info
+
+###
+
+# 4. 拉取消息（Pull模式）
+GET http://localhost:8080/api/queue/receive
+
+###
+
+# 5. 再次查看队列状态（拉取消息后）
+GET http://localhost:8080/api/queue/info
+
+###
+
+# 6. 发送消息给消费者（Push模式）
+POST http://localhost:8080/api/consumer/send-test
+Content-Type: application/json
+
+{
+  "content": "消费者测试消息",
+  "messageType": "CONSUMER_TEST",
+  "count": 1
+}
+
+###
+
+# 7. 查看队列状态（消费者处理后）
+GET http://localhost:8080/api/queue/info

@@ -1,0 +1,42 @@
+@host=localhost
+@port=8080
+# 如用 docker-compose 启动应用，请改为 38080
+# @port=38080
+
+@baseUrl=http://{{host}}:{{port}}
+
+### 获取当前支持的队列类型
+GET {{baseUrl}}/api/queue/types
+
+### 查看当前队列信息
+GET {{baseUrl}}/api/queue/info
+
+### 切换到 Java 内存队列
+POST {{baseUrl}}/api/queue/switch?queueType=java&queueName=default
+
+### 切换到 Redis 队列（队列名：test-queue）
+POST {{baseUrl}}/api/queue/switch?queueType=redis&queueName=test-queue
+
+### 切换到 RabbitMQ 队列（队列名：test-queue）
+# 注意：需在 RabbitMQ 创建 direct 类型交换机 queue.exchange，并将队列 test-queue 以 routingKey=test-queue 绑定到该交换机
+POST {{baseUrl}}/api/queue/switch?queueType=rabbitmq&queueName=test-queue
+
+### 发送一条消息（使用当前选中的队列）
+POST {{baseUrl}}/api/queue/send
+Content-Type: application/json
+
+{
+  "content": "hello from http file2332",
+  "messageType": "API"
+}
+
+### 接收一条消息
+GET {{baseUrl}}/api/queue/receive
+
+### 批量接收最多 10 条消息
+GET {{baseUrl}}/api/queue/receive/batch?maxMessages=10
+
+### 清空当前队列
+POST {{baseUrl}}/api/queue/clear
+
+

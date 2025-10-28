@@ -1,0 +1,69 @@
+### 消费者测试接口
+
+# 1. 发送单条测试消息
+POST http://localhost:8080/api/consumer/send-test
+Content-Type: application/json
+
+{
+  "content": "Hello Consumer!",
+  "messageType": "CONSUMER_TEST",
+  "count": 1
+}
+
+###
+
+# 2. 发送多条测试消息
+POST http://localhost:8080/api/consumer/send-test
+Content-Type: application/json
+
+{
+  "content": "批量测试消息",
+  "messageType": "BATCH_TEST",
+  "count": 5
+}
+
+###
+
+# 3. 发送不同类型的消息
+POST http://localhost:8080/api/consumer/send-test
+Content-Type: application/json
+
+{
+  "content": "API消息测试",
+  "messageType": "API",
+  "count": 3
+}
+
+###
+
+# 4. 发送系统消息
+POST http://localhost:8080/api/consumer/send-test
+Content-Type: application/json
+
+{
+  "content": "系统消息测试",
+  "messageType": "SYSTEM",
+  "count": 2
+}
+
+###
+
+# 5. 发送用户消息
+POST http://localhost:8080/api/consumer/send-test
+Content-Type: application/json
+
+{
+  "content": "用户消息测试",
+  "messageType": "USER",
+  "count": 2
+}
+
+###
+
+# 6. 获取消费者状态
+GET http://localhost:8080/api/consumer/status
+
+###
+
+# 7. 获取队列信息（对比消费者激活前后的变化）
+GET http://localhost:8080/api/queue/info

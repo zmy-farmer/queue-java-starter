@@ -23,6 +23,8 @@ public class RedisQueueService extends AbstractQueueService {
         super(queueName, "REDIS");
         this.redisTemplate = redisTemplate;
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+        this.objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         this.queueKey = "queue:" + queueName;
         log.info("初始化Redis队列: {}", queueName);
     }

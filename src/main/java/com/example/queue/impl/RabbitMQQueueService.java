@@ -24,6 +24,8 @@ public class RabbitMQQueueService extends AbstractQueueService {
         super(queueName, "RABBITMQ");
         this.rabbitTemplate = rabbitTemplate;
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+        this.objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         this.exchangeName = "queue.exchange";
         this.routingKey = queueName;
         log.info("初始化RabbitMQ队列: {}", queueName);
